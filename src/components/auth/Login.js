@@ -40,8 +40,10 @@ export default class Login extends Component {
                     username: "",
                     password: "",
                 });
-                localStorage.sid = response._id
+                localStorage.sid = response._id 
+                console.log(localStorage.sid)
                 localStorage.setItem("userData",JSON.stringify({username:response.username, email:response.email}))
+                console.log(localStorage.userData)
                 AuthMe.login(() => {
                     this.props.history.push('/')
                   });

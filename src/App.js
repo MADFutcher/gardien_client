@@ -12,9 +12,6 @@ import NewLocation from './components/location/NewLocation'
 import AllLocations from './components/location/AllLocations'
 
 
-
-
-
 export default class App extends React.Component {
   render(){
     return (
@@ -31,17 +28,10 @@ export default class App extends React.Component {
             />
             <ProtectedRoute
               exact
-              path='/:userId/locations' 
+              path='/:userId/locations/:locationId' 
               id={localStorage.sid ? localStorage.sid : null}
               userData={localStorage.userData ? JSON.parse(localStorage.userData) : null}
-              component={AllLocations}
-            />
-            <ProtectedRoute
-              exact
-              path='/:userId/locations' 
-              id={localStorage.sid ? localStorage.sid : null}
-              userData={localStorage.userData ? JSON.parse(localStorage.userData) : null}
-              component={AllLocations}
+              component={Location}
             />
             <ProtectedRoute
               exact

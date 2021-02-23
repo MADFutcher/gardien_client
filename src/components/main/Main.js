@@ -6,9 +6,10 @@ import AuthMe from '../services/AuthMe'
 import WeatherService from '../services/WeatherService'
 import UserService from '../services/UserService';
 import LocationService from '../services/LocationService'
+import ProcessWeatherForecast from '../processing/weatherForcastProcessing'
 // import MapService from '../services/MapService'
 import LocationCard from '../cards/LocationCard'
-import { Link } from 'react-router-dom';
+import uuid from 'react-uuid'
 
 export default class Main extends Component {
     constructor(props){
@@ -58,15 +59,33 @@ export default class Main extends Component {
     }
 
 
+    checkForWarnings = () =>{
+        const weatherService = new WeatherService(`51.571915,4.768323`)
+        weatherService.forecast().then(results=>console.log(results))
+    }
+
+
+
+
     getLocations=()=>{
         this.locationService.getAllLocations(this.props.id)
                             .then(results =>{
                                     results.data.locations.forEach(loc=>{
+                                        const locationId = loc._id
+                                        const plantInfo = loc.plants
+                                        const locType = loc.type
                                         const latlng = `${loc.location.coordinates[0]},${loc.location.coordinates[1]}`
-                                        let weatherService = new WeatherService(latlng)
-                                        weatherService.current().then(results=>{
+                                        let weatherService = new WeatherService(latlng,3)
+                                        weatherService.forecast().then(results=>{
+                                            let warnings
+                                            if(locType==='Outdoor'){
+                                                warnings = ProcessWeatherForecast(results.forecast,locationId, plantInfo)
+                                            }else{
+                                                warnings=[]
+                                            }
                                             let prevlocDetails= [...this.state.allLocations]
                                             loc.weatherInfo = results
+                                            loc.warnings = warnings
                                             prevlocDetails.push(loc)
                                             this.setState({
                                                 allLocations: prevlocDetails
@@ -76,10 +95,14 @@ export default class Main extends Component {
                                 }, err=>console.log(err))
     }
 
+
+
+
+
     componentDidMount(){
         // this.getWeather()
         this.getLocations()
-        
+
         // let test =  new MapService('Tuinzigtlaan 138, Tuinzigt, Breda, 4184JE')
         // test.streetToLatLng().then(results => console.log(results))
     }
@@ -93,15 +116,11 @@ export default class Main extends Component {
                 <h1>Welcome {this.props.userData.username}</h1>
                 <div className="row mt-5">
                     <div className='col'>
-                        <h4>Locations</h4>
                         {this.state.allLocations.map(el=>{
-                            return <LocationCard locationInfo={el} userId={this.props.id} key={el._id}/>
+                            return <LocationCard locationInfo={el} userId={this.props.id} key={uuid()}/>
                         })}
                     </div>        
                 </div>
-            
-                    
-                
             </div>
         )
     }
