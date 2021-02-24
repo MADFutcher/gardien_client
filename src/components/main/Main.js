@@ -10,6 +10,7 @@ import ProcessWeatherForecast from '../processing/weatherForcastProcessing'
 // import MapService from '../services/MapService'
 import LocationCard from '../cards/LocationCard'
 import uuid from 'react-uuid'
+import { Link } from 'react-router-dom';
 
 export default class Main extends Component {
     constructor(props){
@@ -110,8 +111,13 @@ export default class Main extends Component {
     render() {
         return (
             <div className="container-fluid">
-                <div className='text-right p-4'>
-                    <Button className='btn btn-success' onClick={this.logout}>Logout</Button>
+                <div className='row'>
+                    <div className='text-left p-4 col-6'>
+                        <Link to={`/${this.props.id}/locations/newlocation`}><Button variant="outline-primary">New Location</Button></Link>
+                    </div>
+                    <div className='text-right p-4 col-6'>
+                        <Button variant='outline-success' onClick={this.logout}>Logout</Button>
+                    </div>
                 </div>
                 <h1>Welcome {this.props.userData.username}</h1>
                 <div className="row mt-5">

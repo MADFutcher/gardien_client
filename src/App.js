@@ -9,7 +9,6 @@ import Main from './components/main/Main'
 import Login from './components/auth/Login';
 import Signup from './components/auth/Signup';
 import NewLocation from './components/location/NewLocation'
-import AllLocations from './components/location/AllLocations'
 
 
 export default class App extends React.Component {
@@ -28,17 +27,16 @@ export default class App extends React.Component {
             />
             <ProtectedRoute
               exact
-              path='/:userId/locations/:locationId' 
-              id={localStorage.sid ? localStorage.sid : null}
-              userData={localStorage.userData ? JSON.parse(localStorage.userData) : null}
-              component={Location}
-            />
-            <ProtectedRoute
-              exact
               path='/:userId/locations/newlocation' 
               id={localStorage.sid ? localStorage.sid : null}
               userData={localStorage.userData ? JSON.parse(localStorage.userData) : null}
               component={NewLocation}
+            />
+            <ProtectedRoute
+              path='/:userId/locations/:locationId' 
+              id={localStorage.sid ? localStorage.sid : null}
+              userData={localStorage.userData ? JSON.parse(localStorage.userData) : null}
+              component={Location}
             />
           </Switch>
       </div>
