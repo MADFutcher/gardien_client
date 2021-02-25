@@ -1,4 +1,8 @@
 import React, { Component } from 'react'
+import LocationService from '../services/LocationService'
+import PlantService from '../services/PlantService'
+import MapService from '../services/MapService'
+
 import Form from 'react-bootstrap/Form'
 import { Link } from 'react-router-dom'
 import Button from 'react-bootstrap/Button'
@@ -29,6 +33,8 @@ export default class NewLocation extends Component {
         }
     }
 
+    plantService = new PlantService()
+    locationService = new LocationService()
 
     handleOnCange = (e)=>{
         const target = e.target
@@ -37,7 +43,6 @@ export default class NewLocation extends Component {
         this.setState({
             [name]: val
           });
-        console.log(this.state)
     }
 
     handlePlantChange = (e) =>{
@@ -68,7 +73,45 @@ export default class NewLocation extends Component {
 
 
     handleLocationSubmit = () =>{
-        console.log(this.state)
+
+        const userId = this.props.id
+        const {name, type ,street, city, country, postcode} = this.state
+        const postcodeClean = postcode.replace(' ','')
+        const address = `${street} ${city} ${country} ${postcodeClean}`
+        const newPlants = this.state.plants
+
+        const geocoding = new MapService(`${address}`)
+        geocoding.streetToLatLng()
+                 .then(response =>{
+                    console.log(response)
+                    const newLocationInfo = {
+                        name,
+                        type,
+                        lat: response.data[0].latitude,
+                        lng: response.data[0].longitude
+                    }
+                    console.log(newLocationInfo)
+                    this.locationService.postNewLocation(userId, newLocationInfo)
+                                        .then(newLoc =>{
+                                                newPlants.forEach(plant =>{
+                                                    this.plantService.postNewPlant(userId, newLoc.newLocationId, plant)
+                                                                    .then(newplant => {
+                                                                        console.log(newplant)
+                                                                    }, err=> console.log(err))
+                                            })
+                                            this.props.history.push('/')
+                                        },err=>console.log(err))
+                 })
+        // 
+        //     
+
+        //     type:this.state.type,
+        // }
+
+        // this.locationService.postNewLocation(this.props.id, t)
+
+
+
     }
 
 
@@ -112,6 +155,7 @@ export default class NewLocation extends Component {
                                 <Form.Group controlId="formGridSType">
                                     <Form.Label>Type</Form.Label>
                                     <Form.Control as="select" name='type' value={this.state.type} onChange={this.handleOnCange}>
+                                        <option></option>
                                         <option>Indoor</option>
                                         <option>Outdoor</option>
                                     </Form.Control>

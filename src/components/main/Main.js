@@ -7,7 +7,7 @@ import WeatherService from '../services/WeatherService'
 import UserService from '../services/UserService';
 import LocationService from '../services/LocationService'
 import ProcessWeatherForecast from '../processing/weatherForcastProcessing'
-// import MapService from '../services/MapService'
+
 import LocationCard from '../cards/LocationCard'
 import uuid from 'react-uuid'
 import { Link } from 'react-router-dom';

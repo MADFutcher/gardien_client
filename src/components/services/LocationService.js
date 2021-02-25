@@ -19,6 +19,11 @@ class LocationService {
       .then(response => response.data)
   }
 
+  postNewLocation = (_id,newLocation) =>{
+    return this.service.post(`/${_id}/locations/newLocation`, newLocation)
+    .then(response => response.data)
+  }
+
 }
 
 export default LocationService;
