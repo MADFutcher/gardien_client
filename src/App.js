@@ -9,6 +9,7 @@ import Main from './components/main/Main'
 import Login from './components/auth/Login';
 import Signup from './components/auth/Signup';
 import NewLocation from './components/location/NewLocation'
+import Location from './components/location/Location'
 
 
 export default class App extends React.Component {

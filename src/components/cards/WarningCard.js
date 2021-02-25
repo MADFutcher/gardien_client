@@ -26,14 +26,13 @@ export default function WarningCard(props) {
     }
 
     const icon = props.tempState==='low'?<i className="fal fa-temperature-frigid"></i>:<i className="fal fa-thermometer-full"></i>
-
     if (show) {
         return (
         <Alert variant={colour} onClose={() => setShow(false)} dismissible>
-            <h4>{title}</h4>
+            <h4>{icon}</h4>
             {props.date}
             <br/>
-            <span className='h6'>{icon} {props.plantName}</span>
+            {props.plants.map(plant=>{return plant})}
         </Alert>
         );
     }

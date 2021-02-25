@@ -101,17 +101,7 @@ export default class NewLocation extends Component {
                                             })
                                             this.props.history.push('/')
                                         },err=>console.log(err))
-                 })
-        // 
-        //     
-
-        //     type:this.state.type,
-        // }
-
-        // this.locationService.postNewLocation(this.props.id, t)
-
-
-
+                })
     }
 
 
@@ -173,13 +163,14 @@ export default class NewLocation extends Component {
                                             <Form.Row >
                                                 <Form.Group as={Col} controlId="formGridName">
                                                 <Form.Label>Plant Name</Form.Label>
-                                                <Form.Control type="text" placeholder="Enter Location Name" name='name' value={this.state.plant.name} onChange={this.handlePlantChange}/>
+                                                <Form.Control type="text" placeholder="Enter Plant Name" name='name' value={this.state.plant.name} onChange={this.handlePlantChange}/>
                                                 </Form.Group>
                                             </Form.Row>
                             
                                             <Form.Group controlId="formGridAddress1">
                                             <Form.Label>Type</Form.Label>
                                                 <Form.Control as="select" name='type' defaultValue={this.state.plant.type} onChange={this.handlePlantChange}>
+                                                    <option></option>
                                                     <option>Vegetable</option>
                                                     <option>Tree</option>
                                                     <option>Fruit</option>
@@ -205,7 +196,8 @@ export default class NewLocation extends Component {
                                                 <Form.Control name='minTemp' type='number' value={this.state.plant.minTemp} onChange={this.handlePlantChange}/>
                                                 </Form.Group>
                                             </Form.Row>
-                                            <Button variant="outline-success" className='mr-2' onClick={this.handlePlantSubmit}>Submit</Button>
+                                            <Button variant="outline-success" className='mr-2' onClick={this.handlePlantSubmit}>Save</Button>
+                                            <p className='text-muted'>Save Plant to location, then click Submit when done adding plants</p>
                                             <hr />
                                         </div>
                                     </React.Fragment>

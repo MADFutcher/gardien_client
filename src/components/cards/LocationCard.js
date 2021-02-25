@@ -24,7 +24,6 @@ export default function LocationCard(props) {
                             <WeatherCard weatherInfo={locationInfo.weatherInfo} />
                         </div>
                         <div className='col-md-4'>
-                            {/* <h5>Plants</h5> */}
                             <PlantCard plantInfo={locationInfo.plants} />
                         </div>
                     </div>

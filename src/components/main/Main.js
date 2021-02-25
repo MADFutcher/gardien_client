@@ -59,15 +59,6 @@ export default class Main extends Component {
         
     }
 
-
-    checkForWarnings = () =>{
-        const weatherService = new WeatherService(`51.571915,4.768323`)
-        weatherService.forecast().then(results=>console.log(results))
-    }
-
-
-
-
     getLocations=()=>{
         this.locationService.getAllLocations(this.props.id)
                             .then(results =>{
@@ -101,11 +92,7 @@ export default class Main extends Component {
 
 
     componentDidMount(){
-        // this.getWeather()
         this.getLocations()
-
-        // let test =  new MapService('Tuinzigtlaan 138, Tuinzigt, Breda, 4184JE')
-        // test.streetToLatLng().then(results => console.log(results))
     }
 
     render() {
