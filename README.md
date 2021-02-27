@@ -1,3 +1,4 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/a574d5ce-c62e-4698-92e1-0406453c238a/deploy-status)](https://app.netlify.com/sites/gardien/deploys)
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
