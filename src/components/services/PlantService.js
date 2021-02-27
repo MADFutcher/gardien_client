@@ -3,7 +3,7 @@ import axios from 'axios';
 class PlantService {
   constructor() {
     let service = axios.create({
-      baseURL: `${process.env.REACT_APP_API_URL}`,
+      baseURL: process.env.REACT_APP_API_URL,
       withCredentials: true
     });
     this.service = service;
