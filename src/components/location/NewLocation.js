@@ -92,7 +92,6 @@ export default class NewLocation extends Component {
                         lat: response.lat,
                         lng: response.lng
                     }
-                    console.log(newLocationInfo)
                     this.locationService.postNewLocation(userId, newLocationInfo)
                                         .then(newLoc =>{
                                                 newPlants.forEach(plant =>{
@@ -100,7 +99,7 @@ export default class NewLocation extends Component {
                                                                     .then(newplant => {
                                                                         console.log(newplant)
                                                                     }, err=> console.log(err))
-                                            })
+                                                })
                                             
                                         })
                                         .then(()=>{this.props.history.push('/')},err=>console.log(err))
@@ -191,12 +190,12 @@ export default class NewLocation extends Component {
                             
                                                 <Form.Group as={Col} controlId="formGridCountry">
                                                 <Form.Label>Min Temp</Form.Label>
-                                                <Form.Control name='maxTemp' type='number' value={this.state.plant.maxTemp}  onChange={this.handlePlantChange}/>
+                                                <Form.Control name='minTemp' type='number' value={this.state.plant.minTemp}  onChange={this.handlePlantChange}/>
                                                 </Form.Group>
                             
                                                 <Form.Group as={Col} controlId="formGridPostcode">
                                                 <Form.Label>Max Temp</Form.Label>
-                                                <Form.Control name='minTemp' type='number' value={this.state.plant.minTemp} onChange={this.handlePlantChange}/>
+                                                <Form.Control name='maxTemp' type='number' value={this.state.plant.maxTemp} onChange={this.handlePlantChange}/>
                                                 </Form.Group>
                                             </Form.Row>
                                             <Button variant="outline-success" className='mr-2' onClick={this.handlePlantSubmit}>Save</Button>
