@@ -11,13 +11,13 @@ class MapService {
 
 
     streetToLatLng = (address) =>{
-        console.log('Class Addres:', address)
+
         return this.service.post('/external/streetLatLng',{address:address})
                     .then(response => response.data)
     }
 
-    latLngToStreet = () =>{
-        return this.service.get('/reverse')
+    latLngToStreet = (lat,lng) =>{
+        return this.service.get('/external/latlngStreet',{lat:lat, lng:lng})
                     .then(response => response.data)
     }
 
