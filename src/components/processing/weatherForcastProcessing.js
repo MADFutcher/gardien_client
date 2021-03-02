@@ -30,7 +30,7 @@ function ProcessWeatherForcast(weatherForecast, locationId, plantInfo){
                 plants:tooHot,
                 severity:"high",
                 date:forecastedDate,
-                tempState:'low'
+                tempState:'high'
             }
             warnings.push(warningInfo)
         }
@@ -39,7 +39,7 @@ function ProcessWeatherForcast(weatherForecast, locationId, plantInfo){
                 plants:tooCold,
                 severity:"high",
                 date:forecastedDate,
-                tempState:'high'
+                tempState:'low'
             }
             warnings.push(warningInfo)
         }
