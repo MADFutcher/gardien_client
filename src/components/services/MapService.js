@@ -3,15 +3,16 @@ const axios = require('axios')
 class MapService {
     constructor(query){
         let service = axios.create({
-            baseURL:'http://api.positionstack.com/v1/',
-            params:{access_key:'e41479315c0953fc9b4a55f5f5a1622e', query:query,limit:1}
-        })
-        this.service = service;
+            baseURL: process.env.REACT_APP_API_URL,
+            withCredentials: true
+          });
+          this.service = service;
     }
 
 
-    streetToLatLng = () =>{
-        return this.service.get('/forward')
+    streetToLatLng = (address) =>{
+        console.log('Class Addres:', address)
+        return this.service.post('/external/streetLatLng',{address:address})
                     .then(response => response.data)
     }
 

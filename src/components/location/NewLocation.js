@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom'
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import './NewLocationForm.css'
+import axios from 'axios'
 
 
 export default class NewLocation extends Component {
@@ -77,18 +78,19 @@ export default class NewLocation extends Component {
         const userId = this.props.id
         const {name, type ,street, city, country, postcode} = this.state
         const postcodeClean = postcode.replace(' ','')
-        const address = `${street} ${city} ${country} ${postcodeClean}`
+        const address = `${street}, ${city}, ${country}, ${postcodeClean}`
         const newPlants = this.state.plants
 
-        const geocoding = new MapService(`${address}`)
-        geocoding.streetToLatLng()
+        const geocoding = new MapService()
+       
+        geocoding.streetToLatLng(`${address}`)
                  .then(response =>{
                     console.log(response)
                     const newLocationInfo = {
                         name,
                         type,
-                        lat: response.data[0].latitude,
-                        lng: response.data[0].longitude
+                        lat: response.lat,
+                        lng: response.lng
                     }
                     console.log(newLocationInfo)
                     this.locationService.postNewLocation(userId, newLocationInfo)
