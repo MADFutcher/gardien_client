@@ -101,8 +101,9 @@ export default class NewLocation extends Component {
                                                                         console.log(newplant)
                                                                     }, err=> console.log(err))
                                             })
-                                            this.props.history.push('/')
-                                        },err=>console.log(err))
+                                            
+                                        })
+                                        .then(()=>{this.props.history.push('/')},err=>console.log(err))
                 })
     }
 
