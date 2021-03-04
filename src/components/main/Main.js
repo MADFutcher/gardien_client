@@ -96,25 +96,33 @@ export default class Main extends Component {
     }
 
     render() {
-        return (
-            <div className="container-fluid">
-                <div className='row'>
-                    <div className='text-left p-4 col-6'>
-                        <Link to={`/${this.props.id}/locations/newlocation`}><Button variant="outline-primary">New Location</Button></Link>
+        console.log(this.props)
+        if (this.props && this.props.userData) {
+            return (
+                <div className="container-fluid">
+                    <div className='row'>
+                        <div className='text-left p-4 col-6'>
+                            <Link to={`/${this.props.id}/locations/newlocation`}><Button variant="outline-primary">New Location</Button></Link>
+                        </div>
+                        <div className='text-right p-4 col-6'>
+                            <Button variant='outline-success' onClick={this.logout}>Logout</Button>
+                        </div>
                     </div>
-                    <div className='text-right p-4 col-6'>
-                        <Button variant='outline-success' onClick={this.logout}>Logout</Button>
+                    <h1>Welcome {this.props.userData.username}</h1>
+                    <div className="row mt-5">
+                        <div className='col'>
+                            {this.state.allLocations.map(el=>{
+                                return <LocationCard locationInfo={el} userId={this.props.id} key={uuid()}/>
+                            })}
+                        </div>        
                     </div>
                 </div>
-                <h1>Welcome {this.props.userData.username}</h1>
-                <div className="row mt-5">
-                    <div className='col'>
-                        {this.state.allLocations.map(el=>{
-                            return <LocationCard locationInfo={el} userId={this.props.id} key={uuid()}/>
-                        })}
-                    </div>        
-                </div>
-            </div>
-        )
+            )
+        }else{
+            return(
+                <h1>HELP</h1>
+            )
+        }
+        
     }
 }

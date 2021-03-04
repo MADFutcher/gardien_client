@@ -1,9 +1,8 @@
-// import './colour.css'
+
 import './App.css'
 import React, { Component } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link, Route, Switch, withRouter } from 'react-router-dom'
-// import Profile from './components/profile/Profile'
 import ProtectedRoute from './components/protectedRoutes/ProtectedRoutes'
 import Main from './components/main/Main'
 import Login from './components/auth/Login';
@@ -13,6 +12,7 @@ import Location from './components/location/Location'
 
 
 export default class App extends React.Component {
+
   render(){
     return (
     <div className="App">
@@ -22,21 +22,15 @@ export default class App extends React.Component {
             <ProtectedRoute
               exact
               path='/' 
-              id={localStorage.sid ? localStorage.sid : null}
-              userData={localStorage.userData ? JSON.parse(localStorage.userData) : null}
               component={Main}
             />
             <ProtectedRoute
               exact
               path='/:userId/locations/newlocation' 
-              id={localStorage.sid ? localStorage.sid : null}
-              userData={localStorage.userData ? JSON.parse(localStorage.userData) : null}
               component={NewLocation}
             />
             <ProtectedRoute
               path='/:userId/locations/:locationId' 
-              id={localStorage.sid ? localStorage.sid : null}
-              userData={localStorage.userData ? JSON.parse(localStorage.userData) : null}
               component={Location}
             />
           </Switch>
