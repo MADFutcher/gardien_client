@@ -138,14 +138,13 @@ export default class Location extends Component {
                 <Card className='mt-2' border='success' style={{ width: '100%', minHeight:'99vh', backgroundColor:'#282c34'}}>
                     <Card.Body>
                         <div className='row'>
-                            <div className='text-left p-4 col-4'>
-                                <Button variant="outline-primary" onClick={this.showEdit}>Edit</Button>
+                            <div className='text-left p-4 col-6'>
+                                <Link to={'/'}><Button variant="outline-warning" className='mr-5'>Back</Button></Link>
+                                <Button variant="outline-primary"  onClick={this.showEdit}>Edit</Button>
                             </div>
-                            <div className='text-left p-4 col-4'>
-                                <Button variant="outline-primary" onClick={this.deleteLocation}>Delete</Button>
-                            </div>
-                            <div className='text-right p-4 col-4'>
-                                <Link to={'/'}><Button variant="outline-warning">Overview</Button></Link>
+                            <div className='text-right p-4 col-6'>
+                            <Button variant="outline-danger" onClick={this.deleteLocation}>Delete</Button>
+                                
                             </div>
                         </div>
                         <h2>{this.state.location.name}</h2>

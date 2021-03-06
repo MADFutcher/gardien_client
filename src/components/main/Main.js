@@ -103,7 +103,7 @@ export default class Main extends Component {
                         <Link to={`/${this.props.id}/locations/newlocation`}><Button variant="outline-primary">New Location</Button></Link>
                     </div>
                     <div className='text-right p-4 col-6'>
-                        <Button variant='outline-success' onClick={this.logout}>Logout</Button>
+                        <Button variant='outline-warning' onClick={this.logout}>Logout</Button>
                     </div>
                 </div>
                 <h1>Welcome {this.props.userData.username}</h1>
