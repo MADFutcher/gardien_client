@@ -32,7 +32,7 @@ export default function WarningCard(props) {
             <h4>{icon}</h4>
             {props.date}
             <br/>
-            {props.plants.map(plant=>{return plant})}
+            {props.plants.map(plant=>{return (<React.Fragment key={plant}>{plant}<br/></React.Fragment> )})}
         </Alert>
         );
     }
