@@ -115,6 +115,12 @@ export default class Location extends Component {
     }
 
 
+    deleteLocation = (e) =>{
+        const userId = this.props.match.params.userId
+        const locationId = this.props.match.params.locationId
+        this.locationService.deleteLocation(userId, locationId)
+                            .then(()=>this.props.history.push('/'))
+    }
 
 
 
@@ -132,10 +138,13 @@ export default class Location extends Component {
                 <Card className='mt-2' border='success' style={{ width: '100%', minHeight:'99vh', backgroundColor:'#282c34'}}>
                     <Card.Body>
                         <div className='row'>
-                            <div className='text-left p-4 col-6'>
+                            <div className='text-left p-4 col-4'>
                                 <Button variant="outline-primary" onClick={this.showEdit}>Edit</Button>
                             </div>
-                            <div className='text-right p-4 col-6'>
+                            <div className='text-left p-4 col-4'>
+                                <Button variant="outline-primary" onClick={this.deleteLocation}>Delete</Button>
+                            </div>
+                            <div className='text-right p-4 col-4'>
                                 <Link to={'/'}><Button variant="outline-warning">Overview</Button></Link>
                             </div>
                         </div>

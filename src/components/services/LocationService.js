@@ -29,6 +29,11 @@ class LocationService {
     .then(response => response.data)
   }
 
+  deleteLocation=(_id, locationId)=>{
+    return this.service.get(`users/${_id}/locations/${locationId}/delete`)
+    .then(response => response.data)
+  }
+
 }
 
 export default LocationService;
