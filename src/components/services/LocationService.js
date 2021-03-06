@@ -24,6 +24,11 @@ class LocationService {
     .then(response => response.data)
   }
 
+  postUpdateLocation = (_id, locationId, locationData)=>{
+    return this.service.post(`users/${_id}/locations/${locationId}`, locationData)
+    .then(response => response.data)
+  }
+
 }
 
 export default LocationService;
