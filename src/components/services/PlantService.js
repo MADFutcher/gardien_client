@@ -20,8 +20,12 @@ class PlantService {
   }
 
   postNewPlant = (_id, locationId, newPlant) =>{
-    console.log(_id, locationId, newPlant)
     return this.service.post(`users/${_id}/locations/${locationId}/plants/new`, newPlant)
+    .then(response => response.data)
+  }
+  
+  postUpdatedPlant = (_id, plantId, updatedPlant) =>{
+    return this.service.post(`users/${_id}/plants/${plantId}`, updatedPlant)
     .then(response => response.data)
   }
 
