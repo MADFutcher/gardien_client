@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import LocationService from '../services/LocationService'
+import MapService from '../services/MapService'
+import PlantService from '../services/PlantService'
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 import PlantCard from '../cards/PlantCard'
@@ -17,6 +19,7 @@ export default class Location extends Component {
             editLocation: false,
             editPlant: false,
             plant:{
+                plantId:'',
                 name:'',
                 type:'',
                 ph:0,
@@ -27,7 +30,9 @@ export default class Location extends Component {
     }
     
     locationService = new LocationService()
-    
+    geocoding = new MapService()
+    plantService = new PlantService()
+
     showEdit = () =>{
         this.setState({editLocation: !this.state.editLocation})
     }
@@ -75,10 +80,51 @@ export default class Location extends Component {
         });
     }
 
+    handleLocationFormSubmit=(e)=>{
+        e.preventDefault()
+        const postcodeClean = this.state.location.postcode.replace(' ','')
+        const {name, street, city, country, postcode, type} = this.state.location
+        const address = `${street}, ${city}, ${country}, ${postcodeClean}`
+        const geoCoding = new MapService()
+
+        geoCoding.streetToLatLng(`${address}`)
+                .then(response =>{
+                    const updatedLocationInfo = {
+                        name,
+                        type,
+                        address,
+                        lat: response.lat,
+                        lng: response.lng
+                    }
+                    console.log(updatedLocationInfo)
+                    this.locationService.postUpdateLocation(this.props.match.params.userId, this.props.match.params.locationId,updatedLocationInfo)
+                                        .then(()=>this.setState({editLocation:false}))
+                }, err=>console.log(err))
+    }
+
+    handlePlantFormSubmit=(e)=>{
+        e.preventDefault()
+        const {name, ph, minTemp, maxTemp, type, _id} = this.state.plant
+        const updatedPlantInfo = {
+            name,
+            ph,
+            type,
+            minTemp,
+            maxTemp
+        }
+        this.plantService.postUpdatedPlant(this.props.match.params.userId, _id,updatedPlantInfo)
+                         .then(()=>this.setState({editLocation:false}), err=>console.log(err))
+    }
+
+
+
+
+
+
+
 
     buttonGrid=(arr, chunkSize)=>{
         const rows =  lodash.chunk(arr,chunkSize)
-        console.log(rows)
         return rows
     }
 
@@ -142,6 +188,7 @@ export default class Location extends Component {
                                                             <option>Outdoor</option>
                                                         </Form.Control>
                                                     </Form.Group>
+                                                    <Button variant="outline-success" className='mr-2' onClick={this.handleLocationFormSubmit}>Update</Button>
                                                 </Form>
                                             </Card.Body>
                                         </Card>
@@ -151,13 +198,13 @@ export default class Location extends Component {
                                     <div className='col'>
                                         <h2>Plants</h2>
                                         {
-                                            this.buttonGrid(this.state.location.plants,4).map(row=>{
+                                            this.buttonGrid(this.state.location.plants,4).map((row,i)=>{
                                                 return (
-                                                    <div className='row justify-content-center'>
+                                                    <div key={i} className='row justify-content-center'>
                                                     {
                                                         row.map(bttn =>{
                                                             return (
-                                                               <Button variant='outline-success' className='m-3' onClick={()=>{this.showPlantForm(bttn._id)}}>{bttn.name}</Button>
+                                                               <Button key={bttn._id} variant='outline-success' className='m-3' onClick={()=>{this.showPlantForm(bttn._id)}}>{bttn.name}</Button>
                                                                 
                                                             )
                                                         })
@@ -211,9 +258,7 @@ export default class Location extends Component {
                                                         <Form.Control name='maxTemp' type='number' value={this.state.plant.maxTemp} onChange={this.handleOnChangePlant}/>
                                                         </Form.Group>
                                                     </Form.Row>
-                                                    {/* <Button variant="outline-success" className='mr-2' onClick={this.handlePlantSubmit}>Save</Button>
-                                                    <p className='text-muted'>Save Plant to location, then click Submit when done adding plants</p>
-                                                    <hr /> */}
+                                                    <Button variant="outline-success"  onClick={this.handlePlantFormSubmit}>Update</Button>
                                                 </Card.Body>
                                             </Card>
                                         </div>
