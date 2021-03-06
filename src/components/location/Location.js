@@ -4,7 +4,6 @@ import MapService from '../services/MapService'
 import PlantService from '../services/PlantService'
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
-import PlantCard from '../cards/PlantCard'
 import Form from 'react-bootstrap/Form'
 import { Link } from 'react-router-dom'
 import Col from 'react-bootstrap/Col'
@@ -43,7 +42,6 @@ export default class Location extends Component {
         const locationId = this.props.match.params.locationId
         this.locationService.getSpecificLocation(userId, locationId)
                             .then(response => {
-                                console.log(response)
                                 let location = response.data.locations[0]
                                 location.street = location.address.split(', ')[0]
                                 location.city = location.address.split(', ')[1]
