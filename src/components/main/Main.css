@@ -4,6 +4,7 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    padding-bottom: 10px;
     /* align-items: center; */
     /* justify-content: center; */
     font-size: calc(5px + 2vmin);

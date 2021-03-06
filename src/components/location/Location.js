@@ -85,7 +85,7 @@ export default class Location extends Component {
     render() {
         return (
             <div className='container-fluid'>
-                <Card className='mt-2' border='success' style={{ width: '100%', height:'99vh', backgroundColor:'#282c34'}}>
+                <Card className='mt-2' border='success' style={{ width: '100%', minHeight:'99vh', backgroundColor:'#282c34'}}>
                     <Card.Body>
                         <div className='row'>
                             <div className='text-left p-4 col-6'>
