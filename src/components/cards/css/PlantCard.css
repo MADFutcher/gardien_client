@@ -1,32 +1,47 @@
-div.fullBorder {
+div.fullBorder,
+button.fullBorder {
     border: 1px solid #28a745  !important;
+    color: white;
   }
 
 
-div.bottomBorder {
+div.bottomBorder,
+button.bottomBorder {
     border-bottom: 1px solid #28a745  !important;
     border-left: 1px solid #28a745  !important;
     border-right: 1px solid #28a745  !important;
     border-top: 0 none  !important;
+    color: white;
   }
 
-div.BorderBLR{
+div.BorderBLR,
+button.BorderBLR{
     border-top: 0 none  !important;
     border-left: 1px solid #28a745  !important;
     border-right: 1px solid #28a745  !important;
     border-bottom: 1px solid #28a745  !important;
+    color: white;
   }
 
-div.BorderTLR{
+div.BorderTLR,
+button.BorderTLR{
     border-top: 1px solid #28a745  !important;
     border-left: 1px solid #28a745  !important;
     border-right: 1px solid #28a745  !important;
     border-bottom: 0 none  !important;
+    color: white;
   }
 
-div.BorderLR{
+div.BorderLR,
+button.BorderLR{
     border-top:  0 none  !important;
     border-left: 1px solid #28a745  !important;
     border-right: 1px solid #28a745  !important;
     border-bottom: 0 none  !important;
+    color: white;
   }
+
+  hr {
+    border-top: 1px solid #28a745;
+    width: 25%;
+}

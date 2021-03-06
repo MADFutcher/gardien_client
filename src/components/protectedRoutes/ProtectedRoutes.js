@@ -4,7 +4,6 @@ import AuthMe from '../services/AuthMe'
 
 
 const ProtectedRoute  = ({component: Component , ...rest}) => {
-  console.log(localStorage)
     return (
       <Route
         {...rest}

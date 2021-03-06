@@ -89,6 +89,7 @@ export default class NewLocation extends Component {
                     const newLocationInfo = {
                         name,
                         type,
+                        address,
                         lat: response.lat,
                         lng: response.lng
                     }
@@ -203,9 +204,6 @@ export default class NewLocation extends Component {
                                             <hr />
                                         </div>
                                     </React.Fragment>
-                                
-                                
-                                
                                 }
                                 
                     

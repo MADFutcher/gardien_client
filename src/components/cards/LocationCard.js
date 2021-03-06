@@ -11,7 +11,7 @@ export default function LocationCard(props) {
     return (
         <Card className='mb-3' border='success' style={{ width: '100%', backgroundColor:'#282c34'}}>
             <Card.Body>
-            <Link to={`/${locationInfo.user}/locations/${locationInfo._id}`} style={{ textDecoration: 'none', color: 'white' }}><Card.Title>{locationInfo.name}</Card.Title> </Link>
+            <Link to={`/${locationInfo.user}/locations/${locationInfo._id}`} style={{ textDecoration: 'none', color: 'white' }}><Card.Text>{locationInfo.name}</Card.Text> </Link>
                 <Card.Text className='text-muted'>{locationInfo.type}<br />{locationInfo.weatherInfo.location.name}</Card.Text>
                 <Card.Text className='text-muted'></Card.Text>
                     <div className='row'>
