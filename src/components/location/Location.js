@@ -58,7 +58,7 @@ export default class Location extends Component {
                                 location.city = location.address.split(', ')[1]
                                 location.country = location.address.split(', ')[2]
                                 location.postcode = location.address.split(', ')[3]
-                                this.setState({location,[el]:false},console.log(this.state))
+                                this.setState({location,[el]:false})
                             }, err=>console.log(err))
     }
 
@@ -106,7 +106,6 @@ export default class Location extends Component {
                         lat: response.lat,
                         lng: response.lng
                     }
-                    console.log(updatedLocationInfo)
                     this.locationService.postUpdateLocation(this.props.match.params.userId, this.props.match.params.locationId,updatedLocationInfo)
                                         .then(()=>this.refreshLocationData('editLocation'))
                 }, err=>console.log(err))
