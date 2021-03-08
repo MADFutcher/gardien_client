@@ -15,7 +15,6 @@ export default class Location extends Component {
         super(props)
         this.state={
             location:{},
-            editLocation: false,
             editPlant: false,
             plant:{
                 plantId:'',
@@ -122,6 +121,14 @@ export default class Location extends Component {
                             .then(()=>this.props.history.push('/'))
     }
 
+    deletePlant = (e) =>{
+        const {userId} = this.props.match.params
+        const plantId = this.state.plant._id
+        this.plantService.deletePlant(userId, plantId)
+                            .then(()=>this.props.history.push('/'))
+    }
+
+
 
 
 
@@ -140,7 +147,7 @@ export default class Location extends Component {
                         <div className='row'>
                             <div className='text-left p-4 col-6'>
                                     <Link to={'/'}><Button variant="outline-warning" className='mr-2'>Back</Button></Link>
-                                    <Button variant="outline-primary"  onClick={this.showEdit}>Edit</Button>
+                                    {/* <Button variant="outline-primary"  onClick={this.showEdit}>Edit</Button> */}
                             </div>
                             <div className='text-right p-4 col-6'>
                                 <Button variant="outline-danger" onClick={this.deleteLocation}>Delete</Button>
@@ -149,128 +156,125 @@ export default class Location extends Component {
                         <h2>{this.state.location.name}</h2>
                         <p>{this.state.location.type}</p>
                         <hr className='mb-2'/>
-                        {this.state.editLocation&&
-                            <React.Fragment>
-                                <div className='row justify-content-md-center'>
-                                    <div className='col-md-4 mt-2'>
-                                        <Card className='mb-3' border='white' style={{ width: '100%', backgroundColor:'#282c34'}}>
-                                            <Card.Body>
-                                                <Form>
-                                                    <Form.Row>
-                                                        <Form.Group as={Col} controlId="formGridName">
-                                                        <Form.Label>Name</Form.Label>
-                                                        <Form.Control type="text" placeholder="Enter Location Name" name='name' value={this.state.location.name} onChange={this.handleOnChangeLocation}/>
-                                                        </Form.Group>
-                                                    </Form.Row>
-                    
-                                                    <Form.Group controlId="formGridAddress1">
-                                                        <Form.Label>Address</Form.Label>
-                                                        <Form.Control placeholder="1234 Main St" name='street' value={this.state.location.street} onChange={this.handleOnChangeLocation}/>
-                                                    </Form.Group>
-                    
-                                                    <Form.Row>
-                                                        <Form.Group as={Col} controlId="formGridCity">
-                                                        <Form.Label>City</Form.Label>
-                                                        <Form.Control name='city' value={this.state.location.city} onChange={this.handleOnChangeLocation}/>
-                                                        </Form.Group>
-                    
-                                                        <Form.Group as={Col} controlId="formGridCountry">
-                                                        <Form.Label>Country</Form.Label>
-                                                        <Form.Control name='country' value={this.state.location.country}  onChange={this.handleOnChangeLocation}/>
-                                                        </Form.Group>
-                    
-                                                        <Form.Group as={Col} controlId="formGridPostcode">
-                                                        <Form.Label>Postcode</Form.Label>
-                                                        <Form.Control name='postcode' value={this.state.location.postcode} onChange={this.handleOnChangeLocation}/>
-                                                        </Form.Group>
-                                                    </Form.Row>
-                    
-                                                    <Form.Group controlId="formGridSType">
-                                                        <Form.Label>Type</Form.Label>
-                                                        <Form.Control as="select" name='type' value={this.state.location.type} onChange={this.handleOnChangeLocation}>
-                                                            <option></option>
-                                                            <option>Indoor</option>
-                                                            <option>Outdoor</option>
-                                                        </Form.Control>
-                                                    </Form.Group>
-                                                    <Button variant="outline-success" className='mr-2' onClick={this.handleLocationFormSubmit}>Update</Button>
-                                                </Form>
-                                            </Card.Body>
-                                        </Card>
-                                    </div>
-                                </div>
-                                <div className='row mt-5'>
-                                    <div className='col'>
-                                        <h2>Plants</h2>
-                                        {
-                                            this.buttonGrid(this.state.location.plants,4).map((row,i)=>{
-                                                return (
-                                                    <div key={i} className='row justify-content-center'>
-                                                    {
-                                                        row.map(bttn =>{
-                                                            return (
-                                                               <Button key={bttn._id} variant='outline-success' className='m-3' onClick={()=>{this.showPlantForm(bttn._id)}}>{bttn.name}</Button>
-                                                                
-                                                            )
-                                                        })
-                                                    }
-                                                    </div>
-                                                    
+                        <div className='row justify-content-md-center'>
+                            <div className='col-md-4 mt-2'>
+                                <Card className='mb-3' border='white' style={{ width: '100%', backgroundColor:'#282c34'}}>
+                                    <Card.Body>
+                                        <Form>
+                                            <Form.Row>
+                                                <Form.Group as={Col} controlId="formGridName">
+                                                <Form.Label>Name</Form.Label>
+                                                <Form.Control type="text" placeholder="Enter Location Name" name='name' value={this.state.location.name} onChange={this.handleOnChangeLocation}/>
+                                                </Form.Group>
+                                            </Form.Row>
+            
+                                            <Form.Group controlId="formGridAddress1">
+                                                <Form.Label>Address</Form.Label>
+                                                <Form.Control placeholder="1234 Main St" name='street' value={this.state.location.street} onChange={this.handleOnChangeLocation}/>
+                                            </Form.Group>
+            
+                                            <Form.Row>
+                                                <Form.Group as={Col} controlId="formGridCity">
+                                                <Form.Label>City</Form.Label>
+                                                <Form.Control name='city' value={this.state.location.city} onChange={this.handleOnChangeLocation}/>
+                                                </Form.Group>
+            
+                                                <Form.Group as={Col} controlId="formGridCountry">
+                                                <Form.Label>Country</Form.Label>
+                                                <Form.Control name='country' value={this.state.location.country}  onChange={this.handleOnChangeLocation}/>
+                                                </Form.Group>
+            
+                                                <Form.Group as={Col} controlId="formGridPostcode">
+                                                <Form.Label>Postcode</Form.Label>
+                                                <Form.Control name='postcode' value={this.state.location.postcode} onChange={this.handleOnChangeLocation}/>
+                                                </Form.Group>
+                                            </Form.Row>
+            
+                                            <Form.Group controlId="formGridSType">
+                                                <Form.Label>Type</Form.Label>
+                                                <Form.Control as="select" name='type' value={this.state.location.type} onChange={this.handleOnChangeLocation}>
+                                                    <option></option>
+                                                    <option>Indoor</option>
+                                                    <option>Outdoor</option>
+                                                </Form.Control>
+                                            </Form.Group>
+                                            <Button variant="outline-success" className='mr-2' onClick={this.handleLocationFormSubmit}>Update</Button>
+                                        </Form>
+                                    </Card.Body>
+                                </Card>
+                            </div>
+                        </div>
+                        <div className='row mt-5'>
+                            <div className='col'>
+                                <h2>Plants</h2>
+                                {
+                                    this.buttonGrid(this.state.location.plants,4).map((row,i)=>{
+                                        return (
+                                            <div key={i} className='row justify-content-center'>
+                                            {
+                                                row.map(bttn =>{
+                                                    return (
+                                                        <Button key={bttn._id} variant='outline-success' className='m-3' onClick={()=>{this.showPlantForm(bttn._id)}}>{bttn.name}</Button>
+                                                        
                                                     )
                                                 })
-                                        }   
-                                    </div>
+                                            }
+                                            </div>
+                                            
+                                            )
+                                        })
+                                }   
+                            </div>
+                        </div>
+                        <hr />
+                        <div className='row justify-content-center mb-3'>
+                            {this.state.editPlant&&
+                                <div className='col-md-4'>
+                                    <Card border='white' style={{ width: '100%', backgroundColor:'#282c34'}}>
+                                        <Card.Body>
+                                            <Form.Row >
+                                                <Form.Group as={Col} controlId="formGridPlantName">
+                                                <Form.Label>Plant Name</Form.Label>
+                                                <Form.Control type="text" placeholder="Enter Plant Name" name='name' value={this.state.plant.name} onChange={this.handleOnChangePlant}/>
+                                                </Form.Group>
+                                            </Form.Row>
+                            
+                                            <Form.Group controlId="formGridAddress1">
+                                            <Form.Label>Type</Form.Label>
+                                                <Form.Control as="select" name='type' defaultValue={this.state.plant.type} onChange={this.handleOnChangePlant}>
+                                                    <option></option>
+                                                    <option>Vegetable</option>
+                                                    <option>Tree</option>
+                                                    <option>Fruit</option>
+                                                    <option>Flower</option>
+                                                    <option>Shrub</option>
+                                                    <option>Nuts</option>
+                                                </Form.Control>
+                                            </Form.Group>
+                            
+                                            <Form.Row>
+                                                <Form.Group as={Col} controlId="formGridPH">
+                                                <Form.Label>PH</Form.Label>
+                                                <Form.Control name='ph' type='number' value={this.state.plant.ph} onChange={this.handleOnChangePlant}/>
+                                                </Form.Group>
+                            
+                                                <Form.Group as={Col} controlId="formGridMinTemp">
+                                                <Form.Label>Min Temp</Form.Label>
+                                                <Form.Control name='minTemp' type='number' value={this.state.plant.minTemp}  onChange={this.handleOnChangePlant}/>
+                                                </Form.Group>
+                            
+                                                <Form.Group as={Col} controlId="formGridMaxTemp">
+                                                <Form.Label>Max Temp</Form.Label>
+                                                <Form.Control name='maxTemp' type='number' value={this.state.plant.maxTemp} onChange={this.handleOnChangePlant}/>
+                                                </Form.Group>
+                                            </Form.Row>
+                                            <Button variant="outline-success mr-5"  onClick={this.handlePlantFormSubmit}>Update</Button>
+                                            <Button variant="outline-danger"  onClick={this.deletePlant}>Delete</Button>
+                                        </Card.Body>
+                                    </Card>
                                 </div>
-                                <hr />
-                                <div className='row justify-content-center mb-3'>
-                                    {this.state.editPlant&&
-                                        <div className='col-md-4'>
-                                            <Card border='white' style={{ width: '100%', backgroundColor:'#282c34'}}>
-                                                <Card.Body>
-                                                    <Form.Row >
-                                                        <Form.Group as={Col} controlId="formGridPlantName">
-                                                        <Form.Label>Plant Name</Form.Label>
-                                                        <Form.Control type="text" placeholder="Enter Plant Name" name='name' value={this.state.plant.name} onChange={this.handleOnChangePlant}/>
-                                                        </Form.Group>
-                                                    </Form.Row>
-                                    
-                                                    <Form.Group controlId="formGridAddress1">
-                                                    <Form.Label>Type</Form.Label>
-                                                        <Form.Control as="select" name='type' defaultValue={this.state.plant.type} onChange={this.handleOnChangePlant}>
-                                                            <option></option>
-                                                            <option>Vegetable</option>
-                                                            <option>Tree</option>
-                                                            <option>Fruit</option>
-                                                            <option>Flower</option>
-                                                            <option>Shrub</option>
-                                                            <option>Nuts</option>
-                                                        </Form.Control>
-                                                    </Form.Group>
-                                    
-                                                    <Form.Row>
-                                                        <Form.Group as={Col} controlId="formGridPH">
-                                                        <Form.Label>PH</Form.Label>
-                                                        <Form.Control name='ph' type='number' value={this.state.plant.ph} onChange={this.handleOnChangePlant}/>
-                                                        </Form.Group>
-                                    
-                                                        <Form.Group as={Col} controlId="formGridMinTemp">
-                                                        <Form.Label>Min Temp</Form.Label>
-                                                        <Form.Control name='minTemp' type='number' value={this.state.plant.minTemp}  onChange={this.handleOnChangePlant}/>
-                                                        </Form.Group>
-                                    
-                                                        <Form.Group as={Col} controlId="formGridMaxTemp">
-                                                        <Form.Label>Max Temp</Form.Label>
-                                                        <Form.Control name='maxTemp' type='number' value={this.state.plant.maxTemp} onChange={this.handleOnChangePlant}/>
-                                                        </Form.Group>
-                                                    </Form.Row>
-                                                    <Button variant="outline-success"  onClick={this.handlePlantFormSubmit}>Update</Button>
-                                                </Card.Body>
-                                            </Card>
-                                        </div>
-                                    }   
-                                </div>
-                            </React.Fragment>
-                        }
+                            }   
+                        </div>
                     </Card.Body>
                 </Card>
             </div>

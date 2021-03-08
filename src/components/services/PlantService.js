@@ -29,6 +29,12 @@ class PlantService {
     .then(response => response.data)
   }
 
+  deletePlant = (_id, plantId)=>{
+    return this.service.get(`users/${_id}/plants/${plantId}/delete`)
+    .then(response => response.data)
+  }
+
+
 }
 
 export default PlantService;
