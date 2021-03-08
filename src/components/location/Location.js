@@ -7,7 +7,7 @@ import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import { Link } from 'react-router-dom'
 import Col from 'react-bootstrap/Col'
-import lodash from 'lodash'
+import lodash, { concat } from 'lodash'
 
 
 export default class Location extends Component {
@@ -16,11 +16,12 @@ export default class Location extends Component {
         this.state={
             location:{},
             editPlant: false,
+            addPlant: false,
             plant:{
-                plantId:'',
+                _id:'',
                 name:'',
                 type:'',
-                ph:0,
+                ph:7,
                 minTemp:0,
                 maxTemp:0,
             },
@@ -30,11 +31,6 @@ export default class Location extends Component {
     locationService = new LocationService()
     geocoding = new MapService()
     plantService = new PlantService()
-
-    showEdit = () =>{
-        this.setState({editLocation: !this.state.editLocation})
-    }
-
 
     componentDidMount(){
         const userId = this.props.match.params.userId
@@ -47,7 +43,23 @@ export default class Location extends Component {
                                 location.country = location.address.split(', ')[2]
                                 location.postcode = location.address.split(', ')[3]
                                 this.setState({location})
-                            })
+                            }, err=>console.log(err))
+    }
+
+
+    refreshLocationData=(setFalse)=>{
+        const el = setFalse
+        const userId = this.props.match.params.userId
+        const locationId = this.props.match.params.locationId
+        this.locationService.getSpecificLocation(userId, locationId)
+                            .then(response => {
+                                let location = response.data.locations[0]
+                                location.street = location.address.split(', ')[0]
+                                location.city = location.address.split(', ')[1]
+                                location.country = location.address.split(', ')[2]
+                                location.postcode = location.address.split(', ')[3]
+                                this.setState({location,[el]:false},console.log(this.state))
+                            }, err=>console.log(err))
     }
 
     handleOnChangeLocation = (e)=>{
@@ -59,12 +71,13 @@ export default class Location extends Component {
         });
     }
 
-    showPlantForm = (plantId) =>{
+    showEditPlantForm = (plantId) =>{
         const editPlant = this.state.location.plants.filter(plant=>plant._id === plantId)
         const {name, ph, minTemp, maxTemp, _id, type} = editPlant[0]
         this.setState({
             plant:{name,type, ph, minTemp, maxTemp, _id},
-            editPlant:true
+            editPlant:true,
+            addPlant:false
         })
     }
 
@@ -95,11 +108,11 @@ export default class Location extends Component {
                     }
                     console.log(updatedLocationInfo)
                     this.locationService.postUpdateLocation(this.props.match.params.userId, this.props.match.params.locationId,updatedLocationInfo)
-                                        .then(()=>this.setState({editLocation:false}))
+                                        .then(()=>this.refreshLocationData('editLocation'))
                 }, err=>console.log(err))
     }
 
-    handlePlantFormSubmit=(e)=>{
+    handleUpdatePlantFormSubmit=(e)=>{
         e.preventDefault()
         const {name, ph, minTemp, maxTemp, type, _id} = this.state.plant
         const updatedPlantInfo = {
@@ -110,9 +123,23 @@ export default class Location extends Component {
             maxTemp
         }
         this.plantService.postUpdatedPlant(this.props.match.params.userId, _id,updatedPlantInfo)
-                         .then(()=>this.setState({editLocation:false}), err=>console.log(err))
+                         .then(()=>this.refreshLocationData('editPlant'), err=>console.log(err))
     }
 
+    handleNewPlantSubmit=(e)=>{
+        e.preventDefault()
+        const {name, ph, minTemp, maxTemp, type} = this.state.plant
+        const {userId, locationId} = this.props.match.params
+        const PlantInfo = {
+            name,
+            ph,
+            type,
+            minTemp,
+            maxTemp
+        }
+        this.plantService.postNewPlant(userId, locationId, PlantInfo)
+                         .then(()=>this.refreshLocationData('addPlant'), err=>console.log(err))
+    }
 
     deleteLocation = (e) =>{
         const userId = this.props.match.params.userId
@@ -125,12 +152,24 @@ export default class Location extends Component {
         const {userId} = this.props.match.params
         const plantId = this.state.plant._id
         this.plantService.deletePlant(userId, plantId)
-                            .then(()=>this.props.history.push('/'))
+                        .then(()=>this.refreshLocationData('editPlant'),err=>console.log(err))
     }
 
 
 
-
+    showAddPlantForm =()=>{
+        this.setState({
+            addPlant:true, 
+            editPlant:false,
+            plant:{
+                _id:'',
+                name:'',
+                type:'',
+                ph:7,
+                minTemp:0,
+                maxTemp:0}
+            })
+    }
 
 
 
@@ -193,7 +232,7 @@ export default class Location extends Component {
                                             <Form.Group controlId="formGridSType">
                                                 <Form.Label>Type</Form.Label>
                                                 <Form.Control as="select" name='type' value={this.state.location.type} onChange={this.handleOnChangeLocation}>
-                                                    <option></option>
+                                                    <option>Select Type</option>
                                                     <option>Indoor</option>
                                                     <option>Outdoor</option>
                                                 </Form.Control>
@@ -214,21 +253,23 @@ export default class Location extends Component {
                                             {
                                                 row.map(bttn =>{
                                                     return (
-                                                        <Button key={bttn._id} variant='outline-success' className='m-3' onClick={()=>{this.showPlantForm(bttn._id)}}>{bttn.name}</Button>
+                                                        <Button key={bttn._id} variant='outline-success' className='m-3' onClick={()=>{this.showEditPlantForm(bttn._id)}}>{bttn.name}</Button>
                                                         
                                                     )
                                                 })
                                             }
+                                            
                                             </div>
                                             
                                             )
                                         })
                                 }   
+                                <Button key={'add_plant'} variant='outline-warning' className='m-3' onClick={()=>{this.showAddPlantForm()}}>Add Plant</Button>
                             </div>
                         </div>
                         <hr />
                         <div className='row justify-content-center mb-3'>
-                            {this.state.editPlant&&
+                            {this.state.editPlant || this.state.addPlant ?
                                 <div className='col-md-4'>
                                     <Card border='white' style={{ width: '100%', backgroundColor:'#282c34'}}>
                                         <Card.Body>
@@ -241,9 +282,9 @@ export default class Location extends Component {
                             
                                             <Form.Group controlId="formGridAddress1">
                                             <Form.Label>Type</Form.Label>
-                                                <Form.Control as="select" name='type' defaultValue={this.state.plant.type} onChange={this.handleOnChangePlant}>
-                                                    <option></option>
-                                                    <option>Vegetable</option>
+                                                <Form.Control as="select" name='type' value={this.state.plant.type} onChange={this.handleOnChangePlant}>
+                                                    <option>Choose...</option>
+                                                    <option>Vegetable</option> 
                                                     <option>Tree</option>
                                                     <option>Fruit</option>
                                                     <option>Flower</option>
@@ -255,7 +296,7 @@ export default class Location extends Component {
                                             <Form.Row>
                                                 <Form.Group as={Col} controlId="formGridPH">
                                                 <Form.Label>PH</Form.Label>
-                                                <Form.Control name='ph' type='number' value={this.state.plant.ph} onChange={this.handleOnChangePlant}/>
+                                                <Form.Control name='ph' type='number' value={this.state.plant.ph} min={1} max={14} onChange={this.handleOnChangePlant}/>
                                                 </Form.Group>
                             
                                                 <Form.Group as={Col} controlId="formGridMinTemp">
@@ -268,12 +309,23 @@ export default class Location extends Component {
                                                 <Form.Control name='maxTemp' type='number' value={this.state.plant.maxTemp} onChange={this.handleOnChangePlant}/>
                                                 </Form.Group>
                                             </Form.Row>
-                                            <Button variant="outline-success mr-5"  onClick={this.handlePlantFormSubmit}>Update</Button>
-                                            <Button variant="outline-danger"  onClick={this.deletePlant}>Delete</Button>
+                                            {this.state.editPlant&&
+                                                <React.Fragment>
+                                                    <Button variant="outline-success mr-5"  onClick={this.handleUpdatePlantFormSubmit}>Update</Button>
+                                                    <Button variant="outline-danger"  onClick={this.deletePlant}>Delete</Button>
+                                                </React.Fragment>
+                                            }
+                                            {this.state.addPlant &&
+                                                <React.Fragment>
+                                                    <Button variant="outline-success"  onClick={this.handleNewPlantSubmit}>Save</Button>
+                                                </React.Fragment>
+                                            }
+                                            
                                         </Card.Body>
                                     </Card>
                                 </div>
-                            }   
+                            : null}
+
                         </div>
                     </Card.Body>
                 </Card>
