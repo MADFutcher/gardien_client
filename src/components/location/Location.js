@@ -312,8 +312,8 @@ export default class Location extends Component {
                                             </Form.Row>
                                             {this.state.editPlant&&
                                                 <React.Fragment>
-                                                    <Button variant="outline-success mr-5"  onClick={this.handleUpdatePlantFormSubmit}>Update</Button>
-                                                    <Button variant="outline-danger mr-5"  onClick={this.deletePlant}>Delete</Button>
+                                                    <Button variant="outline-success mr-2 mr-md-5"  onClick={this.handleUpdatePlantFormSubmit}>Update</Button>
+                                                    <Button variant="outline-danger mr-2 mr-md-5"  onClick={this.deletePlant}>Delete</Button>
                                                     <Button variant="outline-warning"  onClick={()=>this.hidePlantFrom('editPlant')}>cancel</Button>
                                                 </React.Fragment>
                                             }
