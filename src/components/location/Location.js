@@ -154,8 +154,6 @@ export default class Location extends Component {
                         .then(()=>this.refreshLocationData('editPlant'),err=>console.log(err))
     }
 
-
-
     showAddPlantForm =()=>{
         this.setState({
             addPlant:true, 
@@ -168,6 +166,10 @@ export default class Location extends Component {
                 minTemp:0,
                 maxTemp:0}
             })
+    }
+
+    hidePlantFrom=(form)=>{
+        this.setState({[form]:false})
     }
 
 
@@ -311,15 +313,17 @@ export default class Location extends Component {
                                             {this.state.editPlant&&
                                                 <React.Fragment>
                                                     <Button variant="outline-success mr-5"  onClick={this.handleUpdatePlantFormSubmit}>Update</Button>
-                                                    <Button variant="outline-danger"  onClick={this.deletePlant}>Delete</Button>
+                                                    <Button variant="outline-danger mr-5"  onClick={this.deletePlant}>Delete</Button>
+                                                    <Button variant="outline-warning"  onClick={()=>this.hidePlantFrom('editPlant')}>cancel</Button>
                                                 </React.Fragment>
                                             }
                                             {this.state.addPlant &&
                                                 <React.Fragment>
-                                                    <Button variant="outline-success"  onClick={this.handleNewPlantSubmit}>Save</Button>
+                                                    <Button variant="outline-success mr-5"  onClick={this.handleNewPlantSubmit}>Save</Button>
+                                                    <Button variant="outline-warning"  onClick={()=>this.hidePlantFrom('addPlant')}>cancel</Button>
                                                 </React.Fragment>
                                             }
-                                            
+    
                                         </Card.Body>
                                     </Card>
                                 </div>
