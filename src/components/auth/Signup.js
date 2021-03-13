@@ -6,6 +6,7 @@ import Col from 'react-bootstrap/Col'
 import AuthService from '../services/AuthService'
 import AuthMe from '../services/AuthMe'
 
+
 export default class Login extends Component {
     constructor(props){
         super(props)
@@ -44,7 +45,6 @@ export default class Login extends Component {
                     password: '',
                     email:'',
                 });
-
                 localStorage.sid = response._id
                 localStorage.setItem("userData",JSON.stringify({username:response.username, email:response.email}))
                 AuthMe.login(() => {
