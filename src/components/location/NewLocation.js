@@ -177,7 +177,7 @@ export default class NewLocation extends Component {
                                 
                                                 <Form.Group controlId="formGridType">
                                                 <Form.Label>Type</Form.Label>
-                                                    <Form.Control as="select" name='type' defaultValue={this.state.plant.type} onChange={this.handlePlantChange}>
+                                                    <Form.Control as="select" name='type' value={this.state.plant.type} onChange={this.handlePlantChange}>
                                                         <option></option>
                                                         <option>Vegetable</option>
                                                         <option>Tree</option>
