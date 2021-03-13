@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form'
 import { Link } from 'react-router-dom'
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
+import Alert from 'react-bootstrap/Alert'
 import AuthService from '../services/AuthService'
 import AuthMe from "../services/AuthMe";
 
@@ -13,6 +14,7 @@ export default class Login extends Component {
         this.state={
             username:'',
             password:'',
+            errorMsg:'',
         }
     }
 
@@ -45,7 +47,7 @@ export default class Login extends Component {
                 AuthMe.login(() => {
                     this.props.history.push('/')
                   });
-            },error => console.log(error))
+            },error => this.setState({errorMsg:error.response.data.message}))
 
     }
 
@@ -53,22 +55,20 @@ export default class Login extends Component {
     render() {
         return (
             <header className='App-header'>
-                <h1 className='display-1'>Gardien</h1>
+                <img src='../images/Logo1.png'></img>
                 <div>
                     <div className='container'>
                         <div className='row'>
-                            <div className='col-12'>
+                            <div className='col-12 mt-5'>
                             <Form>
                                 <Form.Row>
                                     <Col>
                                         <Form.Group controlId="formBasicUsername">
-                                            <Form.Label>Username</Form.Label>
                                             <Form.Control type="text" name="username" placeholder="Enter Username"  onChange={this.handleOnChange}/>
                                         </Form.Group>
                                     </Col>
                                     <Col>
                                         <Form.Group controlId="formBasicPassword">
-                                            <Form.Label>Password</Form.Label>
                                             <Form.Control type="password" name="password" placeholder="Password" onChange={this.handleOnChange}/>
                                         </Form.Group>
                                     </Col>
@@ -84,6 +84,16 @@ export default class Login extends Component {
                         Signup
                       </Link>
                 </div>
+                {this.state.errorMsg&&
+                <div>
+                    <div className='container'>
+                        <Alert variant={'danger'}>
+                            <h4>{this.state.errorMsg}</h4>
+                        </Alert>
+                    </div>
+                </div>
+                }
+                
             </header>
         )
     }
