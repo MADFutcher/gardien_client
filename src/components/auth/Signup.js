@@ -3,6 +3,7 @@ import Form from 'react-bootstrap/Form'
 import { Link } from 'react-router-dom'
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
+import Alert from 'react-bootstrap/Alert'
 import AuthService from '../services/AuthService'
 import AuthMe from '../services/AuthMe'
 
@@ -14,6 +15,7 @@ export default class Login extends Component {
             username:'',
             password:'',
             email:'',
+            errorMsg:'',
         }
     }
 
@@ -50,14 +52,14 @@ export default class Login extends Component {
                 AuthMe.login(() => {
                     this.props.history.push('/')
                   });
-            }, err=>console.log(err))
+            },error => this.setState({errorMsg:error.response.data.message}))
     }
 
 
     render() {
         return (
             <header className='App-header'>
-                <h1 className='display-1'>Gardien</h1>
+                <img src='../images/Logo1.png' style={'width: 95%'}></img>
                 <div>
                     <div className='container'>
                         <div className='row'>
@@ -94,6 +96,15 @@ export default class Login extends Component {
                         Login
                       </Link>
                 </div>
+                {this.state.errorMsg&&
+                <div>
+                    <div className='container'>
+                        <Alert variant={'danger'}>
+                            <h4>{this.state.errorMsg}</h4>
+                        </Alert>
+                    </div>
+                </div>
+                }
             </header>
         )
     }
