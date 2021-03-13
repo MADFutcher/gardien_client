@@ -59,7 +59,7 @@ export default class Login extends Component {
     render() {
         return (
             <header className='App-header'>
-                <img src='../images/Logo1.png' style={'width: 95%'}></img>
+                <img src='../images/Logo1.png'></img>
                 <div>
                     <div className='container'>
                         <div className='row'>
